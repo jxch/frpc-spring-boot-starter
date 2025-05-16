@@ -3,6 +3,7 @@ package io.github.jxch.frp.frpc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jxch.frp.frpc.config.FrpcProperties;
+import io.github.jxch.frp.frpc.config.FrpcProxyProperties;
 import io.github.jxch.frp.frpc.event.FrpcStartEvent;
 import io.github.jxch.frp.frpc.model.ProxyApiRes;
 import io.github.jxch.frp.frpc.model.ProxyInfoRes;
@@ -12,7 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class FrpcConnectionStatus {
-    private final String API_PATH = "/api/proxy/tcp";
+    private final String API_PATH = "/api/proxy/http";
     private final String url;
     private final FrpcProperties frpcProperties;
     private final RestTemplate restTemplate;
@@ -72,6 +72,20 @@ public class FrpcConnectionStatus {
 
     public Map<String, ProxyInfoRes> getProxyInfoMap() {
         return proxyInfoMap;
+    }
+
+    public Map<String, ProxyInfoRes> getOnlineProxyInfoMap() {
+        return getProxyInfoMap().entrySet().stream()
+                .filter(entry -> entry.getValue().isOnline())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public Map<String, ProxyInfoRes> getOnlineCurrentProxyInfoMap() {
+        Map<String, String> nameMap = frpcProperties.getProxies().stream().collect(Collectors.toMap(FrpcProxyProperties::getName, FrpcProxyProperties::getLocalName));
+        return getProxyInfoMap().entrySet().stream()
+                .filter(entry -> entry.getValue().isOnline())
+                .filter(entry -> nameMap.containsKey(entry.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

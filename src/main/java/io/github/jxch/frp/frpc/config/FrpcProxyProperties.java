@@ -2,6 +2,7 @@ package io.github.jxch.frp.frpc.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.List;
 import java.util.UUID;
 
 public class FrpcProxyProperties {
@@ -36,7 +37,7 @@ public class FrpcProxyProperties {
     /**
      * 自定义域名（http/https类型用）
      */
-    private String customDomains;
+    private List<String> customDomains;
 
     /**
      * 路径前缀（http/https类型用）
@@ -83,11 +84,11 @@ public class FrpcProxyProperties {
         this.remotePort = remotePort;
     }
 
-    public String getCustomDomains() {
+    public List<String> getCustomDomains() {
         return customDomains;
     }
 
-    public void setCustomDomains(String customDomains) {
+    public void setCustomDomains(List<String> customDomains) {
         this.customDomains = customDomains;
     }
 

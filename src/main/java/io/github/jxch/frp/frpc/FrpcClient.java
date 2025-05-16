@@ -20,8 +20,7 @@ public class FrpcClient implements Closeable {
 
     public Map<String, Integer> getRemotePortByLocalName() {
         Map<String, String> nameMap = frpcProperties.getProxies().stream().collect(Collectors.toMap(FrpcProxyProperties::getName, FrpcProxyProperties::getLocalName));
-        return frpcConnectionStatus.getProxyInfoMap().entrySet().stream()
-                .filter(entry -> entry.getValue().isOnline())
+        return frpcConnectionStatus.getOnlineCurrentProxyInfoMap().entrySet().stream()
                 .collect(Collectors.toMap(
                         entry -> nameMap.get(entry.getKey()),
                         entry -> entry.getValue().getConf().getRemotePort()));
@@ -33,7 +32,7 @@ public class FrpcClient implements Closeable {
 
     public Map<String, String> getStatusByLocalName() {
         Map<String, String> nameMap = frpcProperties.getProxies().stream().collect(Collectors.toMap(FrpcProxyProperties::getName, FrpcProxyProperties::getLocalName));
-        return frpcConnectionStatus.getProxyInfoMap().entrySet().stream()
+        return frpcConnectionStatus.getOnlineCurrentProxyInfoMap().entrySet().stream()
                 .collect(Collectors.toMap(
                         entry -> nameMap.get(entry.getKey()),
                         entry -> entry.getValue().getStatus()));

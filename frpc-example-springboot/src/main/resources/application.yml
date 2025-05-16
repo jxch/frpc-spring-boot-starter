@@ -22,7 +22,7 @@ spring:
         name: ${random.uuid}
         local-name: server
         local-ip: 127.0.0.1
-        local-port: 6379
+        local-port: 8888
         remote-port: 0
     dashboard-url: http://asktrue.cn:21994
     dashboard-username: admin
