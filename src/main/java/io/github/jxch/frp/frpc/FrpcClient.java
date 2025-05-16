@@ -30,6 +30,14 @@ public class FrpcClient implements Closeable {
         return frpcProperties.getProxies().stream().collect(Collectors.toMap(FrpcProxyProperties::getLocalName, FrpcProxyProperties::getName));
     }
 
+    public Map<String, String> getUsernameByLocalName() {
+        return frpcProperties.getProxies().stream().collect(Collectors.toMap(FrpcProxyProperties::getLocalName, FrpcProxyProperties::getUsername));
+    }
+
+    public Map<String, String> getPasswordByLocalName() {
+        return frpcProperties.getProxies().stream().collect(Collectors.toMap(FrpcProxyProperties::getLocalName, FrpcProxyProperties::getPassword));
+    }
+
     public Map<String, String> getStatusByLocalName() {
         Map<String, String> nameMap = frpcProperties.getProxies().stream().collect(Collectors.toMap(FrpcProxyProperties::getName, FrpcProxyProperties::getLocalName));
         return frpcConnectionStatus.getOnlineCurrentProxyInfoMap().entrySet().stream()
