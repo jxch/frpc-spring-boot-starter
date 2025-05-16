@@ -18,8 +18,8 @@ import org.springframework.web.client.RestTemplate;
 public class FrpcAutoConfiguration {
 
     @Bean
-    public FrpcRunner frpcRunner(FrpcProperties frpcProperties) {
-        return new FrpcRunner(frpcProperties);
+    public FrpcRunner frpcRunner(FrpcProperties frpcProperties, FrpcConnectionStatus frpcConnectionStatus) {
+        return new FrpcRunner(frpcProperties, frpcConnectionStatus);
     }
 
     @Bean

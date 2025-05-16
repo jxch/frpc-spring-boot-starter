@@ -88,4 +88,16 @@ public class FrpcConnectionStatus {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    public String getEncodedAuth() {
+        return encodedAuth;
+    }
+
+    public Supplier<HttpEntity<String>> getHttpEntitySupplier() {
+        return httpEntitySupplier;
+    }
+
+    public RestTemplate getRestTemplate() {
+        return restTemplate;
+    }
+
 }

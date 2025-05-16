@@ -9,6 +9,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -25,11 +27,15 @@ public class FrpcRunner implements ApplicationRunner, ApplicationEventPublisherA
     private final FrpcProperties frpcProperties;
     private final FrpcToml frpcToml;
     private Process process;
+    private final FrpcConnectionStatus frpcConnectionStatus;
+    private final String clearOfflineUrl;
 
-    public FrpcRunner(FrpcProperties frpcProperties) {
+    public FrpcRunner(FrpcProperties frpcProperties, FrpcConnectionStatus frpcConnectionStatus) {
         check(frpcProperties);
         this.frpcProperties = frpcProperties;
+        this.frpcConnectionStatus = frpcConnectionStatus;
         this.frpcToml = new FrpcToml(frpcProperties, Paths.get(frpcProperties.getToml()).toFile());
+        this.clearOfflineUrl = UriComponentsBuilder.fromHttpUrl(frpcProperties.getDashboardUrl()).path("/api/proxies").queryParam("status", "offline").toUriString();
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
 
@@ -126,6 +132,9 @@ public class FrpcRunner implements ApplicationRunner, ApplicationEventPublisherA
                 log.warn("关闭frpc进程失败", e);
             }
         }
+
+        frpcConnectionStatus.getRestTemplate().exchange(clearOfflineUrl, HttpMethod.DELETE, frpcConnectionStatus.getHttpEntitySupplier().get(), String.class);
+        log.info("clear offline proxies");
     }
 
     @Override
