@@ -44,8 +44,10 @@ public class FrpcProxyProperties {
      */
     private String locations;
 
+    @JsonIgnore
     private String username;
 
+    @JsonIgnore
     private String password;
 
     public String getType() {
