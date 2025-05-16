@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class FrpcConnectionStatus {
-    private final String API_PATH = "/api/proxy/http";
+    private final String API_PATH = "/api/proxy/tcp";
     private final String url;
     private final FrpcProperties frpcProperties;
     private final RestTemplate restTemplate;
