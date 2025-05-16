@@ -1,0 +1,31 @@
+server:
+  port: 8888
+
+spring:
+  frpc:
+    enabled: true
+    server-addr: asktrue.cn
+    server-port: 21993
+    token: d4b7b84b-c661-4eac-b02e-5e1fb784a60b
+    protocol: tcp
+    log-level: info
+    log-file: console
+    frpc-cmd: C:\Programs\frp_0.62.1_windows_amd64\frpc.exe
+    proxies:
+      - type: tcp
+        name: ${random.uuid}
+        local-name: ssh
+        local-ip: 127.0.0.1
+        local-port: 3306
+        remote-port: 0
+      - type: tcp
+        name: ${random.uuid}
+        local-name: server
+        local-ip: 127.0.0.1
+        local-port: 6379
+        remote-port: 0
+    dashboard-url: http://asktrue.cn:21994
+    dashboard-username: admin
+    dashboard-password: e60ca482-8814-485e-90fe-de2fb32f0365
+    toml-file-refresh: true
+
