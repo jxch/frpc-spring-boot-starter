@@ -46,6 +46,17 @@ public class FrpcClient implements Closeable {
                         entry -> entry.getValue().getStatus()));
     }
 
+    public FrpcProxyProperties getByLocalName(String localName) {
+        return frpcProperties.getProxies().stream()
+                .filter(proxy -> proxy.getLocalName().equals(localName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void clearOffline() {
+        frpcRunner.clearOffline();
+    }
+
     @Override
     public void close() {
         frpcRunner.close();

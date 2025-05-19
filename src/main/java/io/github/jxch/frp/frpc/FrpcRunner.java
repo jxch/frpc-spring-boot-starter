@@ -117,6 +117,8 @@ public class FrpcRunner implements ApplicationRunner, ApplicationEventPublisherA
                 log.warn("读取frpc错误日志输出失败", e);
             }
         }).start();
+
+        clearOffline();
     }
 
     public synchronized void shutdown() {
@@ -133,8 +135,12 @@ public class FrpcRunner implements ApplicationRunner, ApplicationEventPublisherA
             }
         }
 
-        frpcConnectionStatus.getRestTemplate().exchange(clearOfflineUrl, HttpMethod.DELETE, frpcConnectionStatus.getHttpEntitySupplier().get(), String.class);
+        clearOffline();
         log.info("clear offline proxies");
+    }
+
+    public void clearOffline() {
+        frpcConnectionStatus.getRestTemplate().exchange(clearOfflineUrl, HttpMethod.DELETE, frpcConnectionStatus.getHttpEntitySupplier().get(), String.class);
     }
 
     @Override
